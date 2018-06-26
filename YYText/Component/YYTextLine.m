@@ -39,6 +39,10 @@
             _lineWidth = CTLineGetTypographicBounds(_CTLine, &_ascent, &_descent, &_leading);
             CFRange range = CTLineGetStringRange(_CTLine);
             _range = NSMakeRange(range.location, range.length);
+            if (@available(iOS 11.0, *)) {
+                CGRect tempRect = CTLineGetBoundsWithOptions(_CTLine, 0);
+                _descent = tempRect.size.height - _ascent;
+            }
             if (CTLineGetGlyphCount(_CTLine) > 0) {
                 CFArrayRef runs = CTLineGetGlyphRuns(_CTLine);
                 CTRunRef run = CFArrayGetValueAtIndex(runs, 0);
